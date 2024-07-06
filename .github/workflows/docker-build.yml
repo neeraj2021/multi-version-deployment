@@ -33,7 +33,7 @@ jobs:
       - name: Push Docker Image
         id: push_image_with_tag
         run: |
-          docker push ${{ secrets.DOCKER_HUB_USER_NAME }}/{{ github.repository}}:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_HUB_USER_NAME }}/multi-version-deployment:${{ github.sha }}
 
       - name: Logout from Docker Hub
         id: logout_docker_hub
