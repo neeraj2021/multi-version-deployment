@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: multi-version-deployment
-        image: neeraj129/multi-version-deployment:d36251051fb08b9d5bcaeb48976399fab46e2fcc
+        image: neeraj129/multi-version-deployment:09978f6860c314f0af40c7b15f6720c49149107e
         ports:
         - containerPort: 3000
         resources:
@@ -32,13 +32,13 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
           failureThreshold: 30
-        readinessProbe:
-            httpGet:
-              path: /
-              port: 3000
-            periodSeconds: 1
-            timeoutSeconds: 1
-            failureThreshold: 1
+        # readinessProbe:
+        #     httpGet:
+        #       path: /
+        #       port: 3000
+        #     periodSeconds: 1
+        #     timeoutSeconds: 1
+        #     failureThreshold: 1
 
 ---
 apiVersion: v1
