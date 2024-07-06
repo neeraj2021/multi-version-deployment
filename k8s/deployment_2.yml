@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-version-deployment-2
+  namespace: mvd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-version-deployment-2
+  template:
+    metadata:
+      labels:
+        app: multi-version-deployment-2
+    spec:
+      containers:
+      - name: multi-version-deployment
+        image: neeraj129/multi-version-deployment:89e58e3aaf03000e9298107a2fa63bdf3f4a0e18
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+        startupProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          failureThreshold: 30
+        readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            periodSeconds: 1
+            timeoutSeconds: 1
+            failureThreshold: 1
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: multi-version-deployment-2
+  namespace: mvd
+spec:
+  selector:
+    app: multi-version-deployment-2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
