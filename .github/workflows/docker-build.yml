@@ -1,0 +1,41 @@
+name: Push Docker Image to Docker Hub
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  push_to_docker_hub:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        id: checkout_code
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        id: login_docker_hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER_NAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Echo GitHub Repository Information
+        id: echo_github_repository_information
+        run: |
+          echo "GitHub Repository Name: $GITHUB_REPOSITORY_NAME"
+          echo "GitHub Ref: ${{ github.ref }}"
+
+      - name: Build Docker Image
+        id: build_image_with_tag
+        run: |
+          docker build "$GITHUB_WORKSPACE" -f "Dockerfile" -t ${{ secrets.DOCKER_HUB_USER_NAME }}/$GITHUB_REPOSITORY_NAME:${{ github.ref }}
+
+      - name: Push Docker Image
+        id: push_image_with_tag
+        run: |
+          docker push ${{ secrets.DOCKER_HUB_USER_NAME }}/$GITHUB_REPOSITORY_NAME:${{ github.ref }}
+
+      - name: Logout from Docker Hub
+        id: logout_docker_hub
+        run: docker logout
