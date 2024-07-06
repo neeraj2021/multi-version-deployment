@@ -23,8 +23,7 @@ jobs:
       - name: Echo GitHub Repository Information
         id: echo_github_repository_information
         run: |
-          echo "GitHub Repository Name: $GITHUB_REPOSITORY_NAME"
-          echo "GitHub Ref: ${{ github.ref }}"
+          echo "GitHub: ${{ github }}"
 
       - name: Build Docker Image
         id: build_image_with_tag
