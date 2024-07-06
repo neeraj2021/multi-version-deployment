@@ -29,7 +29,7 @@ jobs:
       - name: Build Docker Image
         id: build_image_with_tag
         run: |
-          docker build "$GITHUB_WORKSPACE" -f "Dockerfile" -t ${{ secrets.DOCKER_HUB_USER_NAME }}/$GITHUB_REPOSITORY_NAME:${{ github.ref }}
+          docker build "$GITHUB_WORKSPACE" -f "Dockerfile" -t ${{ secrets.DOCKER_HUB_USER_NAME }}/$GITHUB_REPOSITORY_NAME:${{ github.ref }} --label dockerfile-path="Dockerfile"
 
       - name: Push Docker Image
         id: push_image_with_tag
