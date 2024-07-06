@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: multi-version-ingress
+  namespace: mvd
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: mvd-ingress
+  rules:
+    - host: multi-version-deployment.com
+      http:
+        paths:
+          - path: /version
+            pathType: Prefix
+            backend:
+              service:
+                name: multi-version-deployment
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: multi-version-deployment-2
+                port:
+                  number: 8080
